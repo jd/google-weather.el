@@ -74,7 +74,9 @@ If EXPIRE-TIME is set, the data will be fetched from the cache if
 their are not older than EXPIRE-TIME seconds. Otherwise, they
 will be fetched and then cached. Therefore, setting EXPIRE-TIME
 to 0 force a cache renewal."
-  (let* ((expired (google-weather-cache-expired url expire-time))
+  (let* ((expired (if expire-time
+                      (google-weather-cache-expired url expire-time)
+                    t))
          (buffer (if expired
                      (url-retrieve-synchronously url)
                    (google-weather-cache-fetch url)))
