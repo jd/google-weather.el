@@ -55,7 +55,7 @@
   "Display icons."
   :group 'org-google-weather)
 
-(defcustom org-google-weather-icon-directory "/usr/share/icons/oxygen/16x16/status"
+(defcustom org-google-weather-icon-directory "/usr/share/icons/gnome/16x16/status"
   "Directory where to find icon listed in `org-google-weather-icon-alist'."
   :group 'org-google-weather)
 
