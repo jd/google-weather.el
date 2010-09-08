@@ -98,11 +98,11 @@ to 0 force a cache renewal."
           (when language
             (concat "&hl=" language))))
 
-(defun google-weather-get-data (location &optional language cache)
+(defun google-weather-get-data (location &optional language expire-time)
   "Get weather data for LOCATION in LANGUAGE.
-If CACHE is t, cache the result."
+See `google-weather-retrieve-data' for the use of EXPIRE-TIME."
   (google-weather-retrieve-data
-   (google-weather-build-url location language) cache))
+   (google-weather-build-url location language) expire-time))
 
 (defun google-weather-data->weather (data)
   "Return all weather information from DATA."
