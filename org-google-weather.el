@@ -114,6 +114,6 @@ If LOCATION is not set, use org-google-weather-location."
                                  'rear-nonsticky '(display))
                      " ")
            "")
-         condition ", " low "/" high " " temp-symbol)))))
+         condition ", " low "-" high " " temp-symbol)))))
 
 (provide 'org-google-weather)
