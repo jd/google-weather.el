@@ -82,6 +82,7 @@
     (sunny . "weather-clear.png"))
   "Icons to used to illustrate the weather.")
 
+;;;###autoload
 (defun org-google-weather (&optional location language)
   "Return Org entry with the weather for LOCATION in LANGUAGE.
 If LOCATION is not set, use org-google-weather-location."
