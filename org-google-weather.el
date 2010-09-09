@@ -51,7 +51,8 @@
 Valid %-sequences are:
   - %i the icon
   - %c means the weather condition
-  - %L the location
+  - %L the supplied location
+  - %C the city the weather is for
   - %l the lower temperature
   - %h the higher temperature
   - %s the temperature unit symbol")
@@ -105,6 +106,7 @@ If LOCATION is not set, use org-google-weather-location."
       (let ((condition (cadr (assoc 'condition forecast)))
             (low (cadr (assoc 'low forecast)))
             (high (cadr (assoc 'high forecast)))
+            (city (google-weather-data->city data))
             ;; But *they* told me it's just about calling functions!
             (icon (cdr
                    (assoc
@@ -128,6 +130,7 @@ If LOCATION is not set, use org-google-weather-location."
                                 ""))
                        (?c . ,condition)
                        (?L . ,location)
+                       (?C . ,city)
                        (?l . ,low)
                        (?h . ,high)
                        (?s . ,temp-symbol)))))))
