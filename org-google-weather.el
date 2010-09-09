@@ -63,6 +63,7 @@
   '((chance_of_rain . "weather-showers-scattered.png")
     (chance_of_snow . "weather-snow.png")
     (chance_of_storm . "weather-storm.png")
+    (cn_heavyrun . "weather-showers.png")
     (cloudy . "weather-overcast.png")
     (dust . "weather-fog.png")
     (flurries . "weather-storm.png")
