@@ -36,16 +36,25 @@
 
 (require 'google-weather)
 (require 'image)
+(require 'format-spec)
 
 (defgroup org-google-weather nil
   "Google Weather for Org mode."
   :group 'comm)
 
-;; Org mode support
-(defcustom org-google-weather-location
-  "Paris"
+(defcustom org-google-weather-location "Paris"
   "Default location for org-google-weather."
   :group 'org-google-weather)
+
+(defcustom org-google-weather-format "%i %c, %l-%h %s"
+  "String to return to describe the weather.
+Valid %-sequences are:
+  - %i the icon
+  - %c means the weather condition
+  - %L the location
+  - %l the lower temperature
+  - %h the higher temperature
+  - %s the temperature unit symbol")
 
 (defcustom org-google-weather-cache-time 43200
   "Define for how many seconds we should cache the weather."
@@ -105,15 +114,22 @@ If LOCATION is not set, use org-google-weather-location."
                        (cadr (assoc 'icon forecast)))))
                     org-google-weather-icon-alist)))
             (temp-symbol (google-weather-data->temperature-symbol data)))
-        (concat
-         (if org-google-weather-display-icon-p
-             (concat (propertize "icon"
-                                 'display
-                                 (create-image
-                                  (concat org-google-weather-icon-directory "/" icon))
-                                 'rear-nonsticky '(display))
-                     " ")
-           "")
-         condition ", " low "-" high " " temp-symbol)))))
+        (format-spec org-google-weather-format
+                     `((?i . ,(if org-google-weather-display-icon-p
+                                  (concat (propertize "icon"
+                                                      'display
+                                                      (create-image
+                                                       (concat
+                                                        org-google-weather-icon-directory
+                                                        "/"
+                                                        icon))
+                                                      'rear-nonsticky '(display))
+                                          " ")
+                                ""))
+                       (?c . ,condition)
+                       (?L . ,location)
+                       (?l . ,low)
+                       (?h . ,high)
+                       (?s . ,temp-symbol)))))))
 
 (provide 'org-google-weather)
