@@ -121,7 +121,7 @@ If LOCATION is not set, use org-google-weather-location."
                     org-google-weather-icon-alist)))
             (temp-symbol (google-weather-data->temperature-symbol data)))
         (format-spec org-google-weather-format
-                     `((?i . ,(if org-google-weather-display-icon-p
+                     `((?i . ,(if (and icon org-google-weather-display-icon-p)
                                   (concat (propertize "icon"
                                                       'display
                                                       (create-image
