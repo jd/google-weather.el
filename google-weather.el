@@ -31,6 +31,9 @@
 (require 'xml)
 (require 'time-date)
 
+(eval-when-compile
+  (require 'cl))
+
 (defgroup google-weather nil
   "Google Weather."
   :group 'comm)
