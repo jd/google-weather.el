@@ -37,6 +37,7 @@
 (require 'google-weather)
 (require 'image)
 (require 'format-spec)
+(require 'cl)
 
 (defgroup org-google-weather nil
   "Google Weather for Org mode."
