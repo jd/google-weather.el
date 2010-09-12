@@ -95,7 +95,7 @@ Valid %-sequences are:
     (storm . "weather-storm.png")
     (thunderstorm . "weather-storm.png")
     (sunny . "weather-clear.png"))
-  "Icons to used to illustrate the weather.")
+  "Icons to use to illustrate the weather.")
 
 ;;;###autoload
 (defun org-google-weather (&optional location language)

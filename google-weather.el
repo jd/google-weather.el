@@ -40,7 +40,7 @@
 
 (defconst google-weather-url
   "http://www.google.com/ig/api"
-  "URL used to access the Google Weather API.")
+  "URL of the Google Weather API.")
 
 (defconst google-weather-image-url
   "http://www.google.com"
@@ -118,7 +118,7 @@ See `google-weather-retrieve-data' for the use of EXPIRE-TIME."
   (cddr (assoc 'forecast_information (google-weather-data->weather data))))
 
 (defun google-weather-assoc (key data)
-  "Do some sort of magic 'assoc to find fields in DATA."
+  "Extract value of field KEY from DATA."
   (cdr (assoc 'data (cadr (assoc key data)))))
 
 (defun google-weather-data->city (data)
@@ -128,19 +128,19 @@ See `google-weather-retrieve-data' for the use of EXPIRE-TIME."
    (google-weather-data->forecast-information data)))
 
 (defun google-weather-data->postal-code (data)
-  "Return the postal code where the data come from."
+  "Return the postal code where the DATA come from."
   (google-weather-assoc
    'postal_code
    (google-weather-data->forecast-information data)))
 
 (defun google-weather-data->unit-system (data)
-  "Return the unit system used for data."
+  "Return the unit system used for DATA."
   (google-weather-assoc
    'unit_system
    (google-weather-data->forecast-information data)))
 
 (defun google-weather-data->forecast-date (data)
-  "Return the unit system used for data."
+  "Return the unit system used for DATA."
   (google-weather-assoc
    'forecast_date
    (google-weather-data->forecast-information data)))
@@ -171,12 +171,14 @@ See `google-weather-retrieve-data' for the use of EXPIRE-TIME."
 
 (defun google-weather-data->forecast-for-date (data date)
   "Return forecast for DATE from DATA.
-DATE should be in the same format used by calendar i.e. (MONTH DAY YEAR)."
-  (cdr (assoc date
-              (google-weather-data->forecast data))))
+DATE should be in the same format used by calendar,
+i.e. (MONTH DAY YEAR)."
+  (cdr (assoc date (google-weather-data->forecast data))))
 
 (defun google-weather-data->temperature-symbol (data)
-  "Return the temperature to be used according to `google-weather-unit-system-temperature-assoc' in DATA."
+  "Return the temperature to be used according in DATA.
+It uses `google-weather-unit-system-temperature-assoc' to find a
+match."
   (cdr (assoc (google-weather-data->unit-system data) google-weather-unit-system-temperature-assoc)))
 
 (provide 'google-weather)
