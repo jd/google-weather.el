@@ -112,13 +112,14 @@ If LOCATION is not set, use org-google-weather-location."
             (high (cadr (assoc 'high forecast)))
             (city (google-weather-data->city data))
             ;; But *they* told me it's just about calling functions!
-            (icon (cdr
-                   (assoc
-                    (intern
-                     (file-name-sans-extension
-                      (file-name-nondirectory
-                       (cadr (assoc 'icon forecast)))))
-                    org-google-weather-icon-alist)))
+            (icon (when (window-system)
+                    (cdr
+                     (assoc
+                      (intern
+                       (file-name-sans-extension
+                        (file-name-nondirectory
+                         (cadr (assoc 'icon forecast)))))
+                      org-google-weather-icon-alist))))
             (temp-symbol (google-weather-data->temperature-symbol data)))
         (format-spec org-google-weather-format
                      `((?i . ,(if (and icon org-google-weather-display-icon-p)
