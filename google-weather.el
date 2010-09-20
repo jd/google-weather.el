@@ -60,7 +60,7 @@
              (if cache-time
                  (time-less-p
                   (time-add
-                   (url-is-cached url)
+                   cache-time
                    (seconds-to-time expire-time))
                   (current-time))
                t)))))
