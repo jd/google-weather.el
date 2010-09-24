@@ -123,15 +123,14 @@ If LOCATION is not set, use org-google-weather-location."
             (temp-symbol (google-weather-data->temperature-symbol data)))
         (format-spec org-google-weather-format
                      `((?i . ,(if (and icon org-google-weather-display-icon-p)
-                                  (concat (propertize "icon"
-                                                      'display
-                                                      (create-image
-                                                       (concat
-                                                        org-google-weather-icon-directory
-                                                        "/"
-                                                        icon))
-                                                      'rear-nonsticky '(display))
-                                          " ")
+                                  (propertize "icon"
+                                              'display
+                                              (create-image
+                                               (concat
+                                                org-google-weather-icon-directory
+                                                "/"
+                                                icon))
+                                              'rear-nonsticky '(display))
                                 ""))
                        (?c . ,condition)
                        (?L . ,location)
