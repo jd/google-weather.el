@@ -112,7 +112,7 @@ If LOCATION is not set, use org-google-weather-location."
             (high (cadr (assoc 'high forecast)))
             (city (google-weather-data->city data))
             ;; But *they* told me it's just about calling functions!
-            (icon (when (window-system)
+            (icon (when window-system
                     (cdr
                      (assoc
                       (intern
