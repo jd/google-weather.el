@@ -125,11 +125,12 @@ If LOCATION is not set, use org-google-weather-location."
                      `((?i . ,(if (and icon org-google-weather-display-icon-p)
                                   (propertize "icon"
                                               'display
-                                              (create-image
-                                               (concat
-                                                org-google-weather-icon-directory
-                                                "/"
-                                                icon))
+                                              (append
+                                               (create-image
+                                                (concat
+                                                 org-google-weather-icon-directory
+                                                 "/"
+                                                 icon)) '(:ascent center))
                                               'rear-nonsticky '(display))
                                 ""))
                        (?c . ,condition)
