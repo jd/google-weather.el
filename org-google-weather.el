@@ -102,11 +102,12 @@ Valid %-sequences are:
 (defun org-google-weather (&optional location language)
   "Return Org entry with the weather for LOCATION in LANGUAGE.
 If LOCATION is not set, use org-google-weather-location."
-  (let* ((data (google-weather-get-data (or location
-                                            org-google-weather-location)
-                                        language
-                                        org-google-weather-cache-time))
-         (forecast (google-weather-data->forecast-for-date data date)))
+  (let* ((data (ignore-errors
+                 (google-weather-get-data (or location
+                                              org-google-weather-location)
+                                          language
+                                          org-google-weather-cache-time)))
+         (forecast (when data (google-weather-data->forecast-for-date data date))))
     (when forecast
       (let ((condition (cadr (assoc 'condition forecast)))
             (low (cadr (assoc 'low forecast)))
