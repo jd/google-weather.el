@@ -86,7 +86,8 @@ to 0 force a cache renewal."
          data)
     (with-current-buffer buffer
       (goto-char (point-min))
-      (search-forward "\n\n")
+      (unless (search-forward "\n\n" nil t)
+        (error "Data not found"))
       (decode-coding-region
        (point) (point-max)
        (detect-coding-region (point) (point-max) t))
