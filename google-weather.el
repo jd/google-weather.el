@@ -38,8 +38,12 @@
   "Google Weather."
   :group 'comm)
 
+(defcustom google-weather-use-https t
+  "Default protocol to use to access the Google Weather API."
+  :group 'google-weather)
+
 (defconst google-weather-url
-  "http://www.google.com/ig/api"
+  "www.google.com/ig/api"
   "URL of the Google Weather API.")
 
 (defconst google-weather-image-url
@@ -100,7 +104,7 @@ to 0 force a cache renewal."
 
 (defun google-weather-build-url (location &optional language)
   "Build URL to retrieve weather for LOCATION in LANGUAGE."
-  (concat google-weather-url "?weather=" (url-hexify-string location)
+  (concat "http" (when google-weather-use-https "s") "://" google-weather-url "?weather=" (url-hexify-string location)
           (when language
             (concat "&hl=" language))))
 
