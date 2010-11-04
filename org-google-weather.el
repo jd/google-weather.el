@@ -37,12 +37,13 @@
 (require 'google-weather)
 (require 'image)
 (require 'format-spec)
+(require 'solar)
 
 (defgroup org-google-weather nil
   "Google Weather for Org mode."
   :group 'comm)
 
-(defcustom org-google-weather-location "Paris"
+(defcustom org-google-weather-location calendar-location-name
   "Default location for org-google-weather."
   :group 'org-google-weather)
 
