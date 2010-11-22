@@ -90,6 +90,7 @@ Valid %-sequences are:
     (mostly_sunny . "weather-clear.png")
     (partly_cloudy . "weather-few-clouds.png")
     (rain . "weather-showers.png")
+    (rain_snow . "weather-snow.png")
     (sleet . "weather-snow.png")
     (smoke . "weather-fog.png")
     (snow . "weather-snow.png")
