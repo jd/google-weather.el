@@ -47,7 +47,7 @@
   "Default location for org-google-weather."
   :group 'org-google-weather)
 
-(defcustom org-google-weather-format "%i %c, %l-%h %s"
+(defcustom org-google-weather-format "%i %c, [%l,%h] %s"
   "String to return to describe the weather.
 Valid %-sequences are:
   - %i the icon
