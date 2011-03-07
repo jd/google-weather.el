@@ -41,7 +41,8 @@
 
 (defgroup org-google-weather nil
   "Google Weather for Org mode."
-  :group 'comm)
+  :group 'comm
+  :group 'org)
 
 (defcustom org-google-weather-location calendar-location-name
   "Default location for org-google-weather."
