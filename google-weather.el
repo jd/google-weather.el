@@ -186,4 +186,20 @@ It uses `google-weather-unit-system-temperature-assoc' to find a
 match."
   (cdr (assoc (google-weather-data->unit-system data) google-weather-unit-system-temperature-assoc)))
 
+
+(defun google-weather-data->problem-cause (data)
+  "Return a string if DATA contains a problem cause, `nil' otherwise.
+
+An error message example:
+
+((xml_api_reply
+  ((version . \"1\"))
+  (weather
+   ((module_id . \"0\") (tab_id . \"0\") (mobile_row . \"0\")
+    (mobile_zipped . \"1\") (row . \"0\") (section . \"0\"))
+   (problem_cause ((data . \"Information is temporarily unavailable.\"))))))))"
+  (google-weather-assoc
+   'problem_cause
+   (google-weather-data->weather data)))
+
 (provide 'google-weather)

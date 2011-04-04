@@ -104,44 +104,48 @@ Valid %-sequences are:
 (defun org-google-weather (&optional location language)
   "Return Org entry with the weather for LOCATION in LANGUAGE.
 If LOCATION is not set, use org-google-weather-location."
-  (let* ((data (ignore-errors
-                 (google-weather-get-data (or location
-                                              org-google-weather-location)
+  (let* ((location (or location org-google-weather-location))
+         (data (ignore-errors
+                 (google-weather-get-data location
                                           language
                                           org-google-weather-cache-time)))
-         (forecast (when data (google-weather-data->forecast-for-date data date))))
-    (when forecast
-      (let ((condition (cadr (assoc 'condition forecast)))
-            (low (cadr (assoc 'low forecast)))
-            (high (cadr (assoc 'high forecast)))
-            (city (google-weather-data->city data))
-            ;; But *they* told me it's just about calling functions!
-            (icon (when window-system
-                    (cdr
-                     (assoc
-                      (intern
-                       (file-name-sans-extension
-                        (file-name-nondirectory
-                         (cadr (assoc 'icon forecast)))))
-                      org-google-weather-icon-alist))))
-            (temp-symbol (google-weather-data->temperature-symbol data)))
-        (format-spec org-google-weather-format
-                     `((?i . ,(if (and icon org-google-weather-display-icon-p)
-                                  (propertize "icon"
-                                              'display
-                                              (append
-                                               (create-image
-                                                (concat
-                                                 org-google-weather-icon-directory
-                                                 "/"
-                                                 icon)) '(:ascent center))
-                                              'rear-nonsticky '(display))
-                                ""))
-                       (?c . ,condition)
-                       (?L . ,location)
-                       (?C . ,city)
-                       (?l . ,low)
-                       (?h . ,high)
-                       (?s . ,temp-symbol)))))))
+         (problem-cause (when data (google-weather-data->problem-cause data)))
+         (forecast (when (and (null problem-cause) data)
+                     (google-weather-data->forecast-for-date data date))))
+    (if problem-cause
+        (message "%s: %s" location problem-cause)
+      (when forecast
+        (let ((condition (cadr (assoc 'condition forecast)))
+              (low (cadr (assoc 'low forecast)))
+              (high (cadr (assoc 'high forecast)))
+              (city (google-weather-data->city data))
+              ;; But *they* told me it's just about calling functions!
+              (icon (when window-system
+                      (cdr
+                       (assoc
+                        (intern
+                         (file-name-sans-extension
+                          (file-name-nondirectory
+                           (cadr (assoc 'icon forecast)))))
+                        org-google-weather-icon-alist))))
+              (temp-symbol (google-weather-data->temperature-symbol data)))
+          (format-spec org-google-weather-format
+                       `((?i . ,(if (and icon org-google-weather-display-icon-p)
+                                    (propertize "icon"
+                                                'display
+                                                (append
+                                                 (create-image
+                                                  (concat
+                                                   org-google-weather-icon-directory
+                                                   "/"
+                                                   icon)) '(:ascent center))
+                                                'rear-nonsticky '(display))
+                                  ""))
+                         (?c . ,condition)
+                         (?L . ,location)
+                         (?C . ,city)
+                         (?l . ,low)
+                         (?h . ,high)
+                         (?s . ,temp-symbol))))))))
 
 (provide 'org-google-weather)
