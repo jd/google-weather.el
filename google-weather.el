@@ -75,7 +75,7 @@
     (url-cache-extract (url-cache-create-filename url))
     (current-buffer)))
 
-(defun google-weather-retrieve-data (url &optional expire-time)
+(defun google-weather-retrieve-data-raw (url &optional expire-time)
   "Retrieve URL and return its data as string.
 If EXPIRE-TIME is set, the data will be fetched from the cache if
 their are not older than EXPIRE-TIME seconds. Otherwise, they
@@ -88,7 +88,18 @@ to 0 force a cache renewal."
                      (url-retrieve-synchronously url)
                    (google-weather-cache-fetch url)))
          data)
-    (with-current-buffer buffer
+    (when (and expired expire-time)
+      (url-store-in-cache buffer))
+    buffer))
+
+(defun google-weather-retrieve-data (url &optional expire-time)
+  "Retrieve URL and return its data as string.
+If EXPIRE-TIME is set, the data will be fetched from the cache if
+their are not older than EXPIRE-TIME seconds. Otherwise, they
+will be fetched and then cached. Therefore, setting EXPIRE-TIME
+to 0 force a cache renewal."
+    (with-current-buffer (google-weather-retrieve-data-raw
+                          url expire-time)
       (goto-char (point-min))
       (unless (search-forward "\n\n" nil t)
         (error "Data not found"))
@@ -97,8 +108,6 @@ to 0 force a cache renewal."
        (detect-coding-region (point) (point-max) t))
       (set-buffer-multibyte t)
       (setq data (xml-parse-region (point) (point-max)))
-      (when (and expired expire-time)
-        (url-store-in-cache (current-buffer)))
       (kill-buffer (current-buffer))
       data)))
 
