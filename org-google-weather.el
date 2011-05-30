@@ -67,38 +67,14 @@ Valid %-sequences are:
   "Display icons."
   :group 'org-google-weather)
 
-(defcustom org-google-weather-icon-directory "/usr/share/icons/gnome/16x16/status"
-  "Directory where to find icon listed in `org-google-weather-icon-alist'."
-  :group 'org-google-weather)
-
-(defcustom org-google-weather-icon-alist
-  '((chance_of_rain . "weather-showers-scattered.png")
-    (chance_of_snow . "weather-snow.png")
-    (chance_of_storm . "weather-storm.png")
-    (cn_cloudy . "weather-overcast.png")
-    (cn_heavyrun . "weather-showers.png")
-    (cn_sunny . "weather-clear.png")
-    (cloudy . "weather-overcast.png")
-    (dust . "weather-fog.png")
-    (flurries . "weather-storm.png")
-    (fog . "weather-fog.png")
-    (haze . "weather-fog.png")
-    (icy . "weather-snow.png")
-    (jp_sunny . "weather-clear.png")
-    (jp_cloudy . "weather-overcast.png")
-    (mist . "weather-storm.png")
-    (mostly_cloudy . "weather-overcast.png")
-    (mostly_sunny . "weather-clear.png")
-    (partly_cloudy . "weather-few-clouds.png")
-    (rain . "weather-showers.png")
-    (rain_snow . "weather-snow.png")
-    (sleet . "weather-snow.png")
-    (smoke . "weather-fog.png")
-    (snow . "weather-snow.png")
-    (storm . "weather-storm.png")
-    (thunderstorm . "weather-storm.png")
-    (sunny . "weather-clear.png"))
-  "Icons to use to illustrate the weather.")
+(defun org-google-weather-get-icon (url)
+  (with-current-buffer
+      (google-weather-retrieve-data-raw url org-google-weather-cache-time)
+    (unless (search-forward "\n\n" nil t)
+      (error "Data not found"))
+    (let ((data (buffer-substring (point) (point-max))))
+      (kill-buffer (current-buffer))
+      data)))
 
 ;;;###autoload
 (defun org-google-weather (&optional location language)
@@ -120,25 +96,18 @@ If LOCATION is not set, use org-google-weather-location."
               (high (cadr (assoc 'high forecast)))
               (city (google-weather-data->city data))
               ;; But *they* told me it's just about calling functions!
-              (icon (when window-system
-                      (cdr
-                       (assoc
-                        (intern
-                         (file-name-sans-extension
-                          (file-name-nondirectory
-                           (cadr (assoc 'icon forecast)))))
-                        org-google-weather-icon-alist))))
+              (icon (when (display-images-p)
+                      (create-image (org-google-weather-get-icon
+                                     (cadr (assoc 'icon forecast)))
+                                     nil t)))
               (temp-symbol (google-weather-data->temperature-symbol data)))
           (format-spec org-google-weather-format
                        `((?i . ,(if (and icon org-google-weather-display-icon-p)
                                     (propertize "icon"
                                                 'display
                                                 (append
-                                                 (create-image
-                                                  (concat
-                                                   org-google-weather-icon-directory
-                                                   "/"
-                                                   icon)) '(:ascent center))
+                                                 icon
+                                                 '(:ascent center))
                                                 'rear-nonsticky '(display))
                                   ""))
                          (?c . ,condition)
