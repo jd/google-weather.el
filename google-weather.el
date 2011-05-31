@@ -105,7 +105,7 @@ to 0 force a cache renewal."
       (set-buffer-multibyte t)
       (setq data (xml-parse-region (point) (point-max)))
       (kill-buffer (current-buffer))
-      data)))
+      data))
 
 (defun google-weather-build-url (location &optional language)
   "Build URL to retrieve weather for LOCATION in LANGUAGE."
