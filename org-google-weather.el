@@ -70,6 +70,7 @@ Valid %-sequences are:
 (defun org-google-weather-get-icon (url)
   (with-current-buffer
       (google-weather-retrieve-data-raw url org-google-weather-cache-time)
+    (goto-char (point-min))
     (unless (search-forward "\n\n" nil t)
       (error "Data not found"))
     (let ((data (buffer-substring (point) (point-max))))
