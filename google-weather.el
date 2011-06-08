@@ -38,9 +38,10 @@
   "Google Weather."
   :group 'comm)
 
-(defcustom google-weather-use-https t
+(defcustom google-weather-use-https nil
   "Default protocol to use to access the Google Weather API."
-  :group 'google-weather)
+  :group 'google-weather
+  :type 'boolean)
 
 (defconst google-weather-url
   "www.google.com/ig/api"
