@@ -47,6 +47,10 @@
   "www.google.com/ig/api"
   "URL of the Google Weather API.")
 
+(defconst google-weather-image-url
+  "http://www.google.com"
+  "URL prefix for images.")
+
 (defcustom google-weather-unit-system-temperature-assoc
   '(("SI" . "℃")
     ("US" . "℉"))
@@ -173,7 +177,8 @@ See `google-weather-retrieve-data' for the use of EXPIRE-TIME."
          `(,forecast-encoded-date
            (low ,(google-weather-assoc 'low forecast))
            (high ,(google-weather-assoc 'high forecast))
-           (icon ,(google-weather-assoc 'icon forecast))
+           (icon ,(concat google-weather-image-url
+                          (google-weather-assoc 'icon forecast)))
            (condition ,(google-weather-assoc 'condition forecast)))))
      (loop for entry in (google-weather-data->weather data)
            when (eq (car entry) 'forecast_conditions)
