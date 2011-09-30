@@ -108,9 +108,9 @@ to 0 force a cache renewal."
        (point) (point-max)
        (detect-coding-region (point) (point-max) t))
       (set-buffer-multibyte t)
-      (setq data (xml-parse-region (point) (point-max)))
-      (kill-buffer (current-buffer))
-      data))
+      (let ((data (xml-parse-region (point) (point-max))))
+        (kill-buffer (current-buffer))
+        data)))
 
 (defun google-weather-build-url (location &optional language)
   "Build URL to retrieve weather for LOCATION in LANGUAGE."
